@@ -6,17 +6,20 @@ import sys
 # a solution that is more efficient than the naive
 # recursive solution
 
-
+# Decision tree - because the cookie monster can eat 1, 2 or 3 cookies at a time, in order to calculate the function for n, you need the results of n-1, n-2 and n-3 as there are 3 possible ways for the cookie monster to start - eating 1 cookie, 2 cookies or 3 cookies.
 def eating_cookies(n, cache=None):
+    # Check that the value is an integer.
+    if type(n) != int:
+        raise TypeError('n must be an integer')
+    # Check that the value is not a negative number.
+    if n < 0:
+        raise ValueError('n must not be a negative number')
     if cache is None:
         cache = {0: 1, 1: 1, 2: 2}
     if n not in cache:
-        cache[n] = (eating_cookies(n-1) +
-                    eating_cookies(n-2) + eating_cookies(n-3))
+        cache[n] = (eating_cookies(n-1, cache) +
+                    eating_cookies(n-2, cache) + eating_cookies(n-3, cache))
     return cache[n]
-
-
-print(eating_cookies(10))
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
